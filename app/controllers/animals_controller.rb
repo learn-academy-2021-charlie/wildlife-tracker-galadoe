@@ -9,12 +9,6 @@ class AnimalsController < ApplicationController
     render json: animal
   end
 
-  def destroy
-    animal = Animal.fin(params[:id])
-    animal.destroy
-    render json: animal
-  end
-
   def create
     animal = Animal.create(animal_params)
     if animal.valid?
@@ -23,6 +17,20 @@ class AnimalsController < ApplicationController
       render json: animal.errors
     end
   end
+
+  def update
+    animal = Animal.find(params[:id])
+    animal.update(animal_params)
+    render json: animal
+  end
+
+  def destroy
+    animal = Animal.find(params[:id])
+    animal.destroy
+    render json: animal
+  end
+
+
 
   private
   def animal_params

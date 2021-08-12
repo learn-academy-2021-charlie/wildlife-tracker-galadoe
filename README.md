@@ -19,7 +19,7 @@ amphibian'
 Animal.create common_name: 'Eagle', latin_latin: 'Aquila', kingdom:
 'Animalia'
 ```
-in the controller
+in the animal controller
 ```ruby
 def index
   animals = Animal.all
@@ -27,7 +27,7 @@ def index
 end
 ```
 ##Story: As the consumer of the API I can update an animal in the database.
-in the controller
+in the animal controller
 ```ruby
 def show
   animal = Animal.find(params[:id])
@@ -35,7 +35,7 @@ def show
 end
 ```
 ##Story: As the consumer of the API I can destroy an animal in the database.
-in the controller
+in the animal controller
 ```ruby
 def destroy
   animal = Animal.fin(params[:id])
@@ -44,7 +44,7 @@ def destroy
 end
 ```
 ##Story: As the consumer of the API I can create a new animal in the database.
-in the controller
+in the animal controller
 ```ruby
 def create
   animal = Animal.create(animal_params)
@@ -55,7 +55,7 @@ def create
   end
 end
 ```
-this is in the controller as well, but its the very last thing
+this is in the controller (animal) as well, but its the very last thing
 ```ruby
 private
 def animal_params
@@ -78,11 +78,30 @@ end
 next, in the sighting model
 ```ruby
 class Sighting < ApplicationRecord
-  belongs_to :animal 
+  belongs_to :animal
 end
 ```
 
-Story: As the consumer of the API I can update an animal sighting in the database.
+##Story: As the consumer of the API I can update an animal sighting in the database.
+first, you want to create an animal sighting before you can update it
+in sighting
+in the sighting controller
+```ruby
+  def create
+    sighting = Sighting.find(params[:id])
+    if sighting.valid?
+      render json: sighting
+    else
+      render json: sighting.errors
+  end
+```
+in the sighting controller create a private that holds the params
+```ruby
+private
+def sighting_params
+  params.require(:sighting).permit(:animal_id, :date, :latitude, :longitude)
+end
+```
 Story: As the consumer of the API I can destroy an animal sighting in the database.
 Story: As the consumer of the API, when I view a specific animal, I can also see a list sightings of that animal.
 Hint: Checkout the Ruby on Rails API docs on how to include associations.
