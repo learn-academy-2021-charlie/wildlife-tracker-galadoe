@@ -102,8 +102,24 @@ def sighting_params
   params.require(:sighting).permit(:animal_id, :date, :latitude, :longitude)
 end
 ```
-Story: As the consumer of the API I can destroy an animal sighting in the database.
-Story: As the consumer of the API, when I view a specific animal, I can also see a list sightings of that animal.
+##Story: As the consumer of the API I can destroy an animal sighting in the database.
+in the sighting controller
+```ruby
+def destroy
+  animal = Animal.find(params[:id])
+  animal.destroy
+  render json: sighting
+end
+```
+##Story: As the consumer of the API, when I view a specific animal, I can also see a list sightings of that animal.
 Hint: Checkout the Ruby on Rails API docs on how to include associations.
-Story: As the consumer of the API, I can run a report to list all sightings during a given time period.
+
+##Story: As the consumer of the API, I can run a report to list all sightings during a given time period.
 Hint: Your controller can look like this:
+in the sighting controller
+```ruby
+def index
+  sighting = Sighting.where(date: params[:start_date]..params[:end_date])
+  render json: sightings
+end
+``
